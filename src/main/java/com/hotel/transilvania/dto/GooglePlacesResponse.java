@@ -22,6 +22,9 @@ public class GooglePlacesResponse {
     @JsonProperty("status")
     private String status;
     
+    @JsonProperty("error_message")
+    private String errorMessage;
+    
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class PlaceResult {

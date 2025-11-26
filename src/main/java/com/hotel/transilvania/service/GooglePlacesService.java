@@ -41,16 +41,24 @@ public class GooglePlacesService {
         
         try {
             String url = construirUrl(coordenadas, raio);
-            log.debug("Consultando Google Places API: {}", url);
+            log.info("Consultando Google Places API: {}", url);
             
             GooglePlacesResponse response = restTemplate.getForObject(url, GooglePlacesResponse.class);
             
-            if (response == null || response.getResults() == null) {
-                log.warn("Resposta vazia da Google Places API");
-                return Collections.emptyList();
+            if (response == null) {
+                log.error("Resposta nula da Google Places API");
+                throw new ErroConsultaExternaException("Resposta vazia do Google Places");
             }
             
+            log.info("Status da resposta: {}", response.getStatus());
+            log.info("Mensagem de erro: {}", response.getErrorMessage());
+            
             validarStatusResposta(response.getStatus());
+            
+            if (response.getResults() == null) {
+                log.warn("Nenhum resultado encontrado");
+                return Collections.emptyList();
+            }
             
             log.info("Google Places retornou {} resultados", response.getResults().size());
             
