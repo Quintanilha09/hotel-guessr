@@ -148,12 +148,20 @@ public class GooglePlacesService {
     private String construirUrl(CoordenadasResponse coordenadas, Integer raio) {
         int raioMetros = raio != null ? raio : 5000; // Padrão 5km
         
-        return String.format("%s?location=%f,%f&radius=%d&type=lodging&key=%s",
+        String url = String.format("%s?location=%f,%f&radius=%d&type=lodging&key=%s",
                 apiUrl,
                 coordenadas.getLatitude(),
                 coordenadas.getLongitude(),
                 raioMetros,
                 apiKey);
+        
+        // Log sem expor a chave completa
+        String urlLog = url.replaceAll("key=[^&]+", "key=***");
+        log.info("URL construída: {}", urlLog);
+        log.info("Coordenadas: lat={}, lng={}, raio={}m", 
+                coordenadas.getLatitude(), coordenadas.getLongitude(), raioMetros);
+        
+        return url;
     }
     
     private HotelResponse converterParaHotelResponse(GooglePlacesResponse.PlaceResult place, 
