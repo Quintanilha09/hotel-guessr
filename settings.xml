@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    
+    <!-- Usar Maven Central público ao invés de repositórios corporativos -->
+    <mirrors>
+        <mirror>
+            <id>maven-central-mirror</id>
+            <name>Maven Central Mirror</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <mirrorOf>*</mirrorOf>
+        </mirror>
+    </mirrors>
+    
+    <!-- Profiles para diferentes ambientes -->
+    <profiles>
+        <profile>
+            <id>public-repos</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <name>Maven Central Repository</name>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <name>Maven Central Plugin Repository</name>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+    
+    <!-- Ativar profile por padrão -->
+    <activeProfiles>
+        <activeProfile>public-repos</activeProfile>
+    </activeProfiles>
+</settings>

@@ -1,0 +1,130 @@
+{
+  "info": {
+    "name": "Transilvania - CEP API",
+    "description": "Collection para testar a API de consulta de CEP do sistema Transilvania",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Consultar CEP",
+      "item": [
+        {
+          "name": "POST - Consultar CEP (Av. Paulista)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cep\": \"01310-100\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/cep/consultar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "cep", "consultar"]
+            }
+          }
+        },
+        {
+          "name": "POST - Consultar CEP (Praça Mauá)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cep\": \"20040-020\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/cep/consultar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "cep", "consultar"]
+            }
+          }
+        },
+        {
+          "name": "POST - Consultar CEP Não Encontrado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cep\": \"99999-999\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/cep/consultar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "cep", "consultar"]
+            }
+          }
+        },
+        {
+          "name": "GET - Buscar por CEP",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/cep/01310100",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "cep", "01310100"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Listar Consultas",
+      "item": [
+        {
+          "name": "GET - Listar Todas as Consultas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/cep/consultas",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "cep", "consultas"]
+            }
+          }
+        },
+        {
+          "name": "GET - Histórico por CEP",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/cep/historico/01310100",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "cep", "historico", "01310100"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
