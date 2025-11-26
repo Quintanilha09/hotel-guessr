@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.stream.Collectors;
 
@@ -31,6 +32,14 @@ public class ApiExceptionHandler {
                 .body(ApiErroResponse.of(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
     
+    @ExceptionHandler(HotelNaoEncontradoException.class)
+    public ResponseEntity<ApiErroResponse> handleHotelNaoEncontrado(HotelNaoEncontradoException ex) {
+        log.warn("Hotel não encontrado: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiErroResponse.of(HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+    
     @ExceptionHandler(ErroConsultaExternaException.class)
     public ResponseEntity<ApiErroResponse> handleErroConsultaExterna(ErroConsultaExternaException ex) {
         log.error("Erro na consulta externa: {}", ex.getMessage());
@@ -52,6 +61,24 @@ public class ApiExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApiErroResponse.of(HttpStatus.BAD_REQUEST, message));
+    }
+    
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiErroResponse> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        log.warn("Erro de tipo de argumento: {}", ex.getMessage());
+        String message = String.format("Parâmetro '%s' inválido. Valor fornecido: '%s'", 
+                ex.getName(), ex.getValue());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApiErroResponse.of(HttpStatus.BAD_REQUEST, message));
+    }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErroResponse> handleIllegalArgument(IllegalArgumentException ex) {
+        log.warn("Argumento ilegal: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApiErroResponse.of(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
     
     @ExceptionHandler(Exception.class)

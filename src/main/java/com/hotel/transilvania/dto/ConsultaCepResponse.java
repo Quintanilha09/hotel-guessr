@@ -24,10 +24,7 @@ public class ConsultaCepResponse {
     private String bairro;
     private String localidade;
     private String uf;
-    private String ibge;
-    private String gia;
     private String ddd;
-    private String siafi;
     
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataConsulta;
