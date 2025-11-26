@@ -21,6 +21,20 @@ services:
       timeout: 5s
       retries: 5
 
+  # Aplicação Spring Boot
+  app:
+    build: .
+    container_name: transilvania-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - transilvania-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
 volumes:
   postgres_data:
     driver: local
