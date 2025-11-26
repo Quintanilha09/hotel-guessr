@@ -1,9 +1,9 @@
 package com.hotel.transilvania.service;
 
-import com.hotel.transilvania.dto.CepApiResponse;
 import com.hotel.transilvania.dto.CoordenadasResponse;
 import com.hotel.transilvania.dto.HotelResponse;
 import com.hotel.transilvania.dto.HoteisProximosResponse;
+import com.hotel.transilvania.exception.HotelNaoEncontradoException;
 import com.hotel.transilvania.model.Hotel;
 import com.hotel.transilvania.repository.HotelRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,35 +28,50 @@ public class HotelService implements HotelServiceInterface {
     public HoteisProximosResponse buscarHoteisProximosPorCep(String cep, Integer limite) {
         log.info("Buscando hotéis próximos ao CEP: {} (limite: {})", cep, limite);
         
-        // Consulta o CEP para obter informações do endereço
-        var endereco = cepService.consultarCep(cep);
-        
-        // Obtém coordenadas aproximadas
-        CoordenadasResponse coordenadas = geolocalizacaoService.obterCoordenadasPorCep(cep);
-        
-        // Busca hotéis próximos usando a query de distância
-        List<Hotel> hoteis = hotelRepository.findHoteisProximosPorCoordenadas(
-                coordenadas.getLatitude(),
-                coordenadas.getLongitude(),
-                endereco.getUf(),
-                limite != null ? limite : 5
-        );
-        
-        log.info("Encontrados {} hotéis próximos", hoteis.size());
-        
-        // Converte para DTO
-        List<HotelResponse> hoteisResponse = hoteis.stream()
-                .map(hotel -> converterParaResponse(hotel, coordenadas))
-                .collect(Collectors.toList());
-        
-        return HoteisProximosResponse.builder()
-                .cepConsultado(endereco.getCep())
-                .enderecoConsultado(String.format("%s, %s", endereco.getLogradouro(), endereco.getBairro()))
-                .cidade(endereco.getLocalidade())
-                .uf(endereco.getUf())
-                .hoteis(hoteisResponse)
-                .totalEncontrado(hoteisResponse.size())
-                .build();
+        try {
+            // Consulta o CEP para obter informações do endereço
+            var endereco = cepService.consultarCep(cep);
+            
+            // Obtém coordenadas aproximadas
+            CoordenadasResponse coordenadas = geolocalizacaoService.obterCoordenadasPorCep(cep);
+            
+            // Busca hotéis próximos usando a query de distância
+            List<Hotel> hoteis = hotelRepository.findHoteisProximosPorCoordenadas(
+                    coordenadas.getLatitude(),
+                    coordenadas.getLongitude(),
+                    endereco.getUf(),
+                    limite != null ? limite : 5
+            );
+            
+            if (hoteis.isEmpty()) {
+                log.warn("Nenhum hotel encontrado próximo ao CEP: {} no estado: {}", cep, endereco.getUf());
+                throw new HotelNaoEncontradoException(
+                    String.format("Nenhum hotel encontrado para o estado: %s", endereco.getUf())
+                );
+            }
+            
+            log.info("Encontrados {} hotéis próximos", hoteis.size());
+            
+            // Converte para DTO
+            List<HotelResponse> hoteisResponse = hoteis.stream()
+                    .map(hotel -> converterParaResponse(hotel, coordenadas))
+                    .collect(Collectors.toList());
+            
+            return HoteisProximosResponse.builder()
+                    .cepConsultado(endereco.getCep())
+                    .enderecoConsultado(String.format("%s, %s", endereco.getLogradouro(), endereco.getBairro()))
+                    .cidade(endereco.getLocalidade())
+                    .uf(endereco.getUf())
+                    .hoteis(hoteisResponse)
+                    .totalEncontrado(hoteisResponse.size())
+                    .build();
+                    
+        } catch (HotelNaoEncontradoException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("Erro ao buscar hotéis próximos ao CEP: {}", cep, e);
+            throw e;
+        }
     }
     
     private HotelResponse converterParaResponse(Hotel hotel, CoordenadasResponse coordenadas) {

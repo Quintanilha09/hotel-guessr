@@ -126,10 +126,7 @@ public class CepService implements CepServiceInterface {
                 .bairro(entity.getBairro())
                 .localidade(entity.getLocalidade())
                 .uf(entity.getUf())
-                .ibge(entity.getIbge())
-                .gia(entity.getGia())
                 .ddd(entity.getDdd())
-                .siafi(entity.getSiafi())
                 .dataConsulta(entity.getDataConsulta())
                 .build();
     }
