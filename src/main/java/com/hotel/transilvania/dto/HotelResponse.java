@@ -11,12 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class HotelResponse {
     
-    private Long id;
     private String nome;
     private String endereco;
-    private String cidade;
-    private String uf;
-    private String cep;
     private Integer estrelas;
     private String descricao;
     private Double distanciaKm;
