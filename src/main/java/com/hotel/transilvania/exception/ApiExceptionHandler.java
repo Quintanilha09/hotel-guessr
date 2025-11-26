@@ -45,7 +45,23 @@ public class ApiExceptionHandler {
         log.error("Erro na consulta externa: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body(ApiErroResponse.of(HttpStatus.SERVICE_UNAVAILABLE, "Serviço de consulta de CEP temporariamente indisponível"));
+                .body(ApiErroResponse.of(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage()));
+    }
+    
+    @ExceptionHandler(ApiKeyInvalidaException.class)
+    public ResponseEntity<ApiErroResponse> handleApiKeyInvalida(ApiKeyInvalidaException ex) {
+        log.error("API Key inválida: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ApiErroResponse.of(HttpStatus.UNAUTHORIZED, ex.getMessage()));
+    }
+    
+    @ExceptionHandler(LimiteRequisicaoExcedidoException.class)
+    public ResponseEntity<ApiErroResponse> handleLimiteRequisicaoExcedido(LimiteRequisicaoExcedidoException ex) {
+        log.error("Limite de requisições excedido: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(ApiErroResponse.of(HttpStatus.TOO_MANY_REQUESTS, ex.getMessage()));
     }
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
