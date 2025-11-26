@@ -99,7 +99,11 @@ public class GooglePlacesService {
     
     private void validarStatusResposta(String status) {
         switch (status) {
-            case "OK", "ZERO_RESULTS" -> log.debug("Status da API: {}", status);
+            case "OK" -> log.debug("Status da API: {}", status);
+            
+            case "ZERO_RESULTS" -> {
+                log.info("Nenhum hotel encontrado na região");
+            }
             
             case "REQUEST_DENIED" -> {
                 log.error("Requisição negada pelo Google Places: API Key inválida");
@@ -114,8 +118,8 @@ public class GooglePlacesService {
             }
             
             case "INVALID_REQUEST" -> {
-                log.error("Requisição inválida para Google Places");
-                throw new IllegalArgumentException("Parâmetros inválidos para busca de hotéis");
+                log.error("Requisição inválida para Google Places - verifique se a API está habilitada e se os parâmetros estão corretos");
+                throw new ApiKeyInvalidaException("A API Places não está habilitada no seu projeto Google Cloud ou a chave não tem permissões suficientes. Acesse console.cloud.google.com e ative 'Places API (New)'");
             }
             
             default -> {
