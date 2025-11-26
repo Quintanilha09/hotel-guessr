@@ -24,7 +24,7 @@ public class HotelService implements HotelServiceInterface {
     private final GeolocalizacaoServiceInterface geolocalizacaoService;
     
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public HoteisProximosResponse buscarHoteisProximosPorCep(String cep, Integer limite) {
         log.info("Buscando hotéis próximos ao CEP: {} (limite: {})", cep, limite);
         
