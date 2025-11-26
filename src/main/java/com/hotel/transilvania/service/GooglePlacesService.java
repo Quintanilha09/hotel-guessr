@@ -148,7 +148,8 @@ public class GooglePlacesService {
     private String construirUrl(CoordenadasResponse coordenadas, Integer raio) {
         int raioMetros = raio != null ? raio : 5000; // Padrão 5km
         
-        String url = String.format("%s?location=%f,%f&radius=%d&type=lodging&key=%s",
+        // Usar Locale.US para garantir ponto decimal ao invés de vírgula
+        String url = String.format(java.util.Locale.US, "%s?location=%.6f,%.6f&radius=%d&type=lodging&key=%s",
                 apiUrl,
                 coordenadas.getLatitude(),
                 coordenadas.getLongitude(),
@@ -158,6 +159,11 @@ public class GooglePlacesService {
         // Log sem expor a chave completa
         String urlLog = url.replaceAll("key=[^&]+", "key=***");
         log.info("URL construída: {}", urlLog);
+        log.info("Coordenadas: lat={}, lng={}, raio={}m", 
+                coordenadas.getLatitude(), coordenadas.getLongitude(), raioMetros);
+        
+        return url;
+    }
         log.info("Coordenadas: lat={}, lng={}, raio={}m", 
                 coordenadas.getLatitude(), coordenadas.getLongitude(), raioMetros);
         
