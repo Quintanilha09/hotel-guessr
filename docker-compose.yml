@@ -34,6 +34,7 @@ services:
       - hotel-guessr-network
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - GOOGLE_PLACES_API_KEY=${GOOGLE_PLACES_API_KEY:-API_KEY}
 
 volumes:
   postgres_data:
