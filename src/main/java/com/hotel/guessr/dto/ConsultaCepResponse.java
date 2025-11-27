@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * DTO para resposta de consulta de CEP
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ConsultaCepResponse {
     
-    private Long id;
+    private UUID id;
     private String cep;
     private String logradouro;
     private String complemento;
