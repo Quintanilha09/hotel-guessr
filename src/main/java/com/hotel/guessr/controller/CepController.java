@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/cep")
 @RequiredArgsConstructor
-public class CepController {
+public class CepController implements SwaggerCepController {
     
     private final CepServiceInterface cepService;
     
+    @Override
     @GetMapping("/{cep}")
     public ResponseEntity<ConsultaCepResponse> consultarCep(@PathVariable String cep) {
         log.info("Consultando CEP: {}", cep);

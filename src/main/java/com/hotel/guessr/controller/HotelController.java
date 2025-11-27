@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/hoteis")
 @RequiredArgsConstructor
-public class HotelController {
+public class HotelController implements SwaggerHotelController {
     
     private final HotelServiceInterface hotelService;
     
+    @Override
     @GetMapping("/proximos/{cep}")
     public ResponseEntity<HoteisProximosResponse> buscarHoteisProximos(
             @PathVariable String cep,
