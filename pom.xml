@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hotel</groupId>
-	<artifactId>transilvania</artifactId>
+	<artifactId>hotel-guessr</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>transilvania</name>
+	<name>hotel-guessr</name>
 	<description>Serviço de hospedagens</description>
 	<url/>
 	<licenses>
