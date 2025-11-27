@@ -237,7 +237,7 @@ Os testes incluem:
 - ✅ Testes unitários dos serviços
 - ✅ Mocks de APIs externas
 - ✅ Validação de exceções
-- ✅ Cobertura de 100% nos serviços principais
+- ✅ Cobertura de até 100% na maioria dos serviços principais
 
 ## 📊 Estrutura do Projeto
 
