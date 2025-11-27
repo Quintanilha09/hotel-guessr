@@ -10,8 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Hotéis", description = "Operações para busca de hotéis próximos")
 public interface SwaggerHotelController {
@@ -44,8 +42,8 @@ public interface SwaggerHotelController {
     })
     ResponseEntity<HoteisProximosResponse> buscarHoteisProximos(
         @Parameter(description = "CEP de referência para busca", required = true, example = "01310100")
-        @PathVariable String cep,
+        String cep,
         @Parameter(description = "Limite de hotéis retornados", required = false, example = "5")
-        @RequestParam(required = false, defaultValue = "5") Integer limite
+        Integer limite
     );
 }
