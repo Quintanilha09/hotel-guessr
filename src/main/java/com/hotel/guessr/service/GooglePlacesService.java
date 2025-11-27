@@ -76,7 +76,7 @@ public class GooglePlacesService {
             log.error("Timeout ou erro de conexão com Google Places: {}", e.getMessage());
             throw new ErroConsultaExternaException("Não foi possível conectar ao serviço de busca de hotéis", e);
             
-        } catch (ApiKeyInvalidaException | LimiteRequisicaoExcedidoException e) {
+        } catch (ApiKeyInvalidaException | LimiteRequisicaoExcedidoException | ErroConsultaExternaException e) {
             throw e;
             
         } catch (Exception e) {
