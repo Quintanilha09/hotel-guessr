@@ -1,4 +1,4 @@
-# 🐘 Guia Docker PostgreSQL - Transilvania
+# 🐘 Guia Docker PostgreSQL - hotel-guessr
 
 ## 📋 Pré-requisitos
 
@@ -18,7 +18,7 @@ docker-compose --version
 
 ### 1️⃣ Abrir PowerShell no diretório do projeto
 ```powershell
-cd "C:\Users\golivei1\Projetos Pessoais\transilvania"
+cd "C:\Users\golivei1\Projetos Pessoais\hotel-guessr"
 ```
 
 ### 2️⃣ Subir o PostgreSQL com Docker Compose
@@ -29,8 +29,8 @@ docker-compose up -d
 **O que esse comando faz:**
 - `-d`: Executa em background (detached mode)
 - Baixa a imagem do PostgreSQL 15 Alpine (se ainda não tiver)
-- Cria o container `transilvania-postgres`
-- Cria o banco `transilvania_db`
+- Cria o container `hotel-guessr-postgres`
+- Cria o banco `hotel-guessr_db`
 - Expõe a porta `5432`
 
 ### 3️⃣ Verificar se o container está rodando
@@ -41,7 +41,7 @@ docker-compose ps
 Você deve ver algo como:
 ```
 NAME                      STATUS    PORTS
-transilvania-postgres     Up        0.0.0.0:5432->5432/tcp
+hotel-guessr-postgres     Up        0.0.0.0:5432->5432/tcp
 ```
 
 ### 4️⃣ Ver logs do PostgreSQL (opcional)
@@ -60,7 +60,7 @@ docker-compose logs postgres
 
 A aplicação irá:
 - Conectar no PostgreSQL em `localhost:5432`
-- Usar o banco `transilvania_db`
+- Usar o banco `hotel-guessr_db`
 - Criar automaticamente a tabela `consultas_cep`
 
 ---
@@ -108,7 +108,7 @@ docker-compose logs -f postgres
 
 ### Opção 1: Via Docker Exec
 ```powershell
-docker exec -it transilvania-postgres psql -U postgres -d transilvania_db
+docker exec -it hotel-guessr-postgres psql -U postgres -d hotel-guessr_db
 ```
 
 Dentro do PostgreSQL:
@@ -129,7 +129,7 @@ SELECT * FROM consultas_cep;
 ### Opção 2: Via DBeaver ou pgAdmin
 - **Host:** localhost
 - **Port:** 5432
-- **Database:** transilvania_db
+- **Database:** hotel-guessr_db
 - **Username:** postgres
 - **Password:** postgres
 
@@ -179,7 +179,7 @@ docker volume ls
 
 ### Remover volume específico (APAGA TODOS OS DADOS!)
 ```powershell
-docker volume rm transilvania_postgres_data
+docker volume rm hotel-guessr_postgres_data
 ```
 
 ---
@@ -221,7 +221,7 @@ docker-compose down -v
 docker-compose logs -f postgres
 
 # Acessar banco
-docker exec -it transilvania-postgres psql -U postgres -d transilvania_db
+docker exec -it hotel-guessr-postgres psql -U postgres -d hotel-guessr_db
 ```
 
 ---
@@ -231,7 +231,7 @@ docker exec -it transilvania-postgres psql -U postgres -d transilvania_db
 ```
 Host: localhost
 Port: 5432
-Database: transilvania_db
+Database: hotel-guessr_db
 Username: postgres
 Password: postgres
 ```
