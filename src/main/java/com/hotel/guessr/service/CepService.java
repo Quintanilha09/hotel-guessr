@@ -18,9 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Service para operações de consulta de CEP
- */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -32,20 +29,13 @@ public class CepService implements CepServiceInterface {
     @Value("${cep.api.url}")
     private String cepApiUrl;
     
-    /**
-     * Consulta um CEP na API externa e salva no banco
-     */
     @Transactional
     public ConsultaCepResponse consultarCep(String cep) {
         log.info("Iniciando consulta de CEP: {}", cep);
         
-        // Valida e normaliza o CEP
         String cepNormalizado = validarENormalizarCep(cep);
-        
-        // Busca na API externa
         CepApiResponse apiResponse = buscarCepNaApiExterna(cepNormalizado);
         
-        // Converte e salva no banco
         ConsultaCep consultaCep = converterParaEntity(apiResponse);
         ConsultaCep consultaSalva = repository.save(consultaCep);
         
@@ -54,9 +44,6 @@ public class CepService implements CepServiceInterface {
         return converterParaResponse(consultaSalva);
     }
     
-    /**
-     * Valida e normaliza o CEP (remove caracteres especiais)
-     */
     private String validarENormalizarCep(String cep) {
         if (cep == null || cep.isBlank()) {
             throw new CepInvalidoException("CEP não pode ser vazio");

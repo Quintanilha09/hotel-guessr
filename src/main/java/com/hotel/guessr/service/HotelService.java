@@ -24,17 +24,13 @@ public class HotelService implements HotelServiceInterface {
         log.info("Buscando hotéis próximos ao CEP: {} (limite: {})", cep, limite);
         
         try {
-            // Consulta o CEP para obter informações do endereço
             var endereco = cepService.consultarCep(cep);
-            
-            // Obtém coordenadas aproximadas
             CoordenadasResponse coordenadas = geolocalizacaoService.obterCoordenadasPorCep(cep);
             
-            // Busca hotéis próximos usando Google Places API
             List<HotelResponse> hoteis = googlePlacesService.buscarHoteisProximos(
                     coordenadas,
                     limite,
-                    5000 // Raio padrão de 5km
+                    5000
             );
             
             if (hoteis.isEmpty()) {
