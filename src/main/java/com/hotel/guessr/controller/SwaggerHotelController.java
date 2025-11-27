@@ -26,17 +26,23 @@ public interface SwaggerHotelController {
         ),
         @ApiResponse(
             responseCode = "400",
-            description = "Bad Request",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErroResponse.class))
+            description = "CEP inválido ou não encontrado",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = ApiErroResponse.class, example = "{\"apierro\": {\"timestamp\": \"2025-11-27T16:32:41.387Z\", \"status\": \"BAD_REQUEST\", \"codigoErro\": 400, \"mensagemDetalhada\": \"CEP inválido\"}}")
+            )
         ),
         @ApiResponse(
             responseCode = "404",
-            description = "Not Found",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErroResponse.class))
+            description = "Nenhum hotel encontrado próximo ao CEP",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = ApiErroResponse.class, example = "{\"apierro\": {\"timestamp\": \"2025-11-27T16:32:41.388Z\", \"status\": \"NOT_FOUND\", \"codigoErro\": 404, \"mensagemDetalhada\": \"Nenhum hotel encontrado próximo ao CEP: 01310100\"}}")
+            )
         ),
         @ApiResponse(
             responseCode = "500",
-            description = "Internal Server Error",
+            description = "Erro interno do servidor ou serviço externo indisponível",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErroResponse.class))
         )
     })
