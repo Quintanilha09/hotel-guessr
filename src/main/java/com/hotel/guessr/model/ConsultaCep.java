@@ -21,7 +21,8 @@ import java.util.UUID;
 public class ConsultaCep {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(generator = "UUID")
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
     
     @NotBlank(message = "CEP não pode ser vazio")
