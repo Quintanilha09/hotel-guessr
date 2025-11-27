@@ -176,7 +176,7 @@ GET /api/hoteis/proximos/01310100?limite=3
   "hoteis": [
     {
       "id": 1,
-      "nome": "Hotel Transilvania Grand",
+      "nome": "Hotel hotel-guessr Grand",
       "endereco": "Av. Paulista, 1000",
       "cidade": "São Paulo",
       "uf": "SP",
@@ -187,7 +187,7 @@ GET /api/hoteis/proximos/01310100?limite=3
     },
     {
       "id": 2,
-      "nome": "Transilvania Business Hotel",
+      "nome": "hotel-guessr Business Hotel",
       "endereco": "Av. Paulista, 1500",
       "cidade": "São Paulo",
       "uf": "SP",
@@ -198,7 +198,7 @@ GET /api/hoteis/proximos/01310100?limite=3
     },
     {
       "id": 3,
-      "nome": "Transilvania Park Hotel",
+      "nome": "hotel-guessr Park Hotel",
       "endereco": "Rua Augusta, 200",
       "cidade": "São Paulo",
       "uf": "SP",

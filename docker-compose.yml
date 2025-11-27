@@ -4,17 +4,17 @@ services:
   # Banco de dados PostgreSQL
   postgres:
     image: postgres:15-alpine
-    container_name: transilvania-postgres
+    container_name: hotel-guessr-postgres
     environment:
-      POSTGRES_DB: transilvania_db
+      POSTGRES_DB: hotel_guessr_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/postgresql/data
     networks:
-      - transilvania-network
+      - hotel-guessr-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -24,14 +24,14 @@ services:
   # Aplicação Spring Boot
   app:
     build: .
-    container_name: transilvania-app
+    container_name: hotel-guessr-app
     ports:
       - "8080:8080"
     depends_on:
       postgres:
         condition: service_healthy
     networks:
-      - transilvania-network
+      - hotel-guessr-network
     environment:
       - SPRING_PROFILES_ACTIVE=docker
 
@@ -40,5 +40,5 @@ volumes:
     driver: local
 
 networks:
-  transilvania-network:
+  hotel-guessr-network:
     driver: bridge
