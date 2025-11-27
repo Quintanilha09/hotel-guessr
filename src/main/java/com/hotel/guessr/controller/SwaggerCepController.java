@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "CEP", description = "Operações para consulta de CEP")
 public interface SwaggerCepController {
@@ -43,6 +42,6 @@ public interface SwaggerCepController {
     })
     ResponseEntity<ConsultaCepResponse> consultarCep(
         @Parameter(description = "CEP a ser consultado", required = true, example = "01310100")
-        @PathVariable String cep
+        String cep
     );
 }
