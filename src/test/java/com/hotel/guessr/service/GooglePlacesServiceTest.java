@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -286,5 +287,140 @@ class GooglePlacesServiceTest {
                 argThat((String url) -> url.contains("location=-23.561684,-46.656139") && url.contains("radius=5000")),
                 eq(GooglePlacesResponse.class)
         );
+    }
+    
+    @Test
+    @DisplayName("Deve lançar ApiKeyInvalidaException quando status é REQUEST_DENIED")
+    void deveLancarApiKeyInvalidaExceptionQuandoStatusRequestDenied() {
+        // Given
+        configurarApiKey();
+        var coordenadas = criarCoordenadasValidas();
+        var response = new GooglePlacesResponse();
+        response.setStatus("REQUEST_DENIED");
+        response.setResults(new ArrayList<>());
+        
+        when(restTemplate.getForObject(anyString(), eq(GooglePlacesResponse.class))).thenReturn(response);
+        
+        // When & Then
+        var excecao = assertThrows(ApiKeyInvalidaException.class, 
+            () -> googlePlacesService.buscarHoteisProximos(coordenadas, LIMITE, RAIO)
+        );
+        
+        assertTrue(excecao.getMessage().contains("API Key do Google Places inválida"));
+    }
+    
+    @Test
+    @DisplayName("Deve lançar LimiteRequisicaoExcedidoException quando status é OVER_QUERY_LIMIT")
+    void deveLancarLimiteRequisicaoExcedidoExceptionQuandoStatusOverQueryLimit() {
+        // Given
+        configurarApiKey();
+        var coordenadas = criarCoordenadasValidas();
+        var response = new GooglePlacesResponse();
+        response.setStatus("OVER_QUERY_LIMIT");
+        response.setResults(new ArrayList<>());
+        
+        when(restTemplate.getForObject(anyString(), eq(GooglePlacesResponse.class))).thenReturn(response);
+        
+        // When & Then
+        var excecao = assertThrows(LimiteRequisicaoExcedidoException.class, 
+            () -> googlePlacesService.buscarHoteisProximos(coordenadas, LIMITE, RAIO)
+        );
+        
+        assertTrue(excecao.getMessage().contains("Limite de requisições"));
+    }
+    
+    @Test
+    @DisplayName("Deve lançar ApiKeyInvalidaException quando status é INVALID_REQUEST")
+    void deveLancarApiKeyInvalidaExceptionQuandoStatusInvalidRequest() {
+        // Given
+        configurarApiKey();
+        var coordenadas = criarCoordenadasValidas();
+        var response = new GooglePlacesResponse();
+        response.setStatus("INVALID_REQUEST");
+        response.setResults(new ArrayList<>());
+        
+        when(restTemplate.getForObject(anyString(), eq(GooglePlacesResponse.class))).thenReturn(response);
+        
+        // When & Then
+        var excecao = assertThrows(ApiKeyInvalidaException.class, 
+            () -> googlePlacesService.buscarHoteisProximos(coordenadas, LIMITE, RAIO)
+        );
+        
+        assertTrue(excecao.getMessage().contains("API Places não está habilitada"));
+    }
+    
+    @Test
+    @DisplayName("Deve lançar ErroConsultaExternaException quando status é desconhecido")
+    void deveLancarErroConsultaExternaExceptionQuandoStatusDesconhecido() {
+        // Given
+        configurarApiKey();
+        var coordenadas = criarCoordenadasValidas();
+        var response = new GooglePlacesResponse();
+        response.setStatus("UNKNOWN_STATUS");
+        response.setResults(new ArrayList<>());
+        
+        when(restTemplate.getForObject(anyString(), eq(GooglePlacesResponse.class))).thenReturn(response);
+        
+        // When & Then
+        var excecao = assertThrows(ErroConsultaExternaException.class, 
+            () -> googlePlacesService.buscarHoteisProximos(coordenadas, LIMITE, RAIO)
+        );
+        
+        assertNotNull(excecao.getMessage());
+        assertTrue(excecao.getMessage().contains("UNKNOWN_STATUS"));
+    }
+    
+    @Test
+    @DisplayName("Deve lançar ErroConsultaExternaException quando ocorre ResourceAccessException")
+    void deveLancarErroConsultaExternaExceptionQuandoResourceAccessException() {
+        // Given
+        configurarApiKey();
+        var coordenadas = criarCoordenadasValidas();
+        
+        when(restTemplate.getForObject(anyString(), eq(GooglePlacesResponse.class)))
+                .thenThrow(new ResourceAccessException("Timeout"));
+        
+        // When & Then
+        var excecao = assertThrows(ErroConsultaExternaException.class, 
+            () -> googlePlacesService.buscarHoteisProximos(coordenadas, LIMITE, RAIO)
+        );
+        
+        assertTrue(excecao.getMessage().contains("conectar ao serviço"));
+    }
+    
+    @Test
+    @DisplayName("Deve lançar ApiKeyInvalidaException quando HttpClientErrorException é FORBIDDEN")
+    void deveLancarApiKeyInvalidaExceptionQuandoHttpClientErrorForbidden() {
+        // Given
+        configurarApiKey();
+        var coordenadas = criarCoordenadasValidas();
+        
+        when(restTemplate.getForObject(anyString(), eq(GooglePlacesResponse.class)))
+                .thenThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
+        
+        // When & Then
+        var excecao = assertThrows(ApiKeyInvalidaException.class, 
+            () -> googlePlacesService.buscarHoteisProximos(coordenadas, LIMITE, RAIO)
+        );
+        
+        assertTrue(excecao.getMessage().contains("API Key do Google Places inválida"));
+    }
+    
+    @Test
+    @DisplayName("Deve lançar ApiKeyInvalidaException quando HttpClientErrorException é UNAUTHORIZED")
+    void deveLancarApiKeyInvalidaExceptionQuandoHttpClientErrorUnauthorized() {
+        // Given
+        configurarApiKey();
+        var coordenadas = criarCoordenadasValidas();
+        
+        when(restTemplate.getForObject(anyString(), eq(GooglePlacesResponse.class)))
+                .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+        
+        // When & Then
+        var excecao = assertThrows(ApiKeyInvalidaException.class, 
+            () -> googlePlacesService.buscarHoteisProximos(coordenadas, LIMITE, RAIO)
+        );
+        
+        assertTrue(excecao.getMessage().contains("API Key do Google Places inválida"));
     }
 }
