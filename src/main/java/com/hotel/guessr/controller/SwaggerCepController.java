@@ -31,8 +31,11 @@ public interface SwaggerCepController {
         ),
         @ApiResponse(
             responseCode = "404",
-            description = "Not Found",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErroResponse.class))
+            description = "CEP não encontrado",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = ApiErroResponse.class, example = "{\"apierro\": {\"timestamp\": \"2025-11-27T16:32:41.387Z\", \"status\": \"NOT_FOUND\", \"codigoErro\": 404, \"mensagemDetalhada\": \"CEP 99999999 não encontrado\"}}")
+            )
         ),
         @ApiResponse(
             responseCode = "500",
