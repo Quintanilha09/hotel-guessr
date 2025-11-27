@@ -10,10 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-/**
- * Entidade JPA representando uma consulta de CEP
- */
 @Entity
 @Table(name = "consultas_cep")
 @Data
@@ -23,8 +21,8 @@ import java.time.LocalDateTime;
 public class ConsultaCep {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     
     @NotBlank(message = "CEP não pode ser vazio")
     @Size(min = 8, max = 9, message = "CEP deve ter 8 ou 9 caracteres")

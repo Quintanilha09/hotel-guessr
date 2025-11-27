@@ -33,9 +33,6 @@ public class GooglePlacesService {
     
     private final RestTemplate restTemplate;
     
-    /**
-     * Busca hotéis próximos usando Google Places API
-     */
     public List<HotelResponse> buscarHoteisProximos(CoordenadasResponse coordenadas, Integer limite, Integer raio) {
         validarApiKey();
         
@@ -146,9 +143,8 @@ public class GooglePlacesService {
     }
     
     private String construirUrl(CoordenadasResponse coordenadas, Integer raio) {
-        int raioMetros = raio != null ? raio : 5000; // Padrão 5km
+        int raioMetros = raio != null ? raio : 5000;
         
-        // Usar Locale.US para garantir ponto decimal ao invés de vírgula
         String url = String.format(java.util.Locale.US, "%s?location=%.6f,%.6f&radius=%d&type=lodging&key=%s",
                 apiUrl,
                 coordenadas.getLatitude(),
@@ -156,7 +152,6 @@ public class GooglePlacesService {
                 raioMetros,
                 apiKey);
         
-        // Log sem expor a chave completa
         String urlLog = url.replaceAll("key=[^&]+", "key=***");
         log.info("URL construída: {}", urlLog);
         log.info("Coordenadas: lat={}, lng={}, raio={}m", 

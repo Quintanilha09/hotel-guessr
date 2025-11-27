@@ -11,9 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Locale;
 
-/**
- * Serviço que obtém coordenadas geográficas usando Google Geocoding API
- */
 @Slf4j
 @Service
 @RequiredArgsConstructor
