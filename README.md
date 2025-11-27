@@ -137,14 +137,28 @@ java -jar target/hotel-guessr-0.0.1-SNAPSHOT.jar
 
 Após iniciar a aplicação, acesse a documentação interativa do Swagger:
 
+**Interface Visual (Swagger UI):**
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+ou
+
 ```
 http://localhost:8080/swagger-ui.html
 ```
 
-Documentação JSON:
+**Documentação JSON (OpenAPI 3.0):**
 ```
 http://localhost:8080/v3/api-docs
 ```
+
+A documentação Swagger permite:
+- ✅ Visualizar todos os endpoints disponíveis
+- ✅ Testar as requisições diretamente pelo navegador
+- ✅ Ver exemplos de requisições e respostas
+- ✅ Consultar os schemas dos objetos (DTOs)
+- ✅ Verificar os códigos de status HTTP possíveis
 
 ## 🔗 Endpoints Disponíveis
 
